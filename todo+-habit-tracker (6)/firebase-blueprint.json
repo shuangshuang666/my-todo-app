@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Extended user profile information.",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "isAnonymous": { "type": "boolean" },
+        "lastVisit": { "type": "string", "format": "date-time" },
+        "streakCount": { "type": "integer" },
+        "remindersEnabled": { "type": "boolean" },
+        "dailyReminderTime": { "type": "string" }
+      },
+      "required": ["isAnonymous"]
+    },
+    "Habit": {
+      "title": "Habit Definition",
+      "description": "Definition of a habit to track.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "icon": { "type": "string" },
+        "color": { "type": "string" },
+        "frequency": { "type": "string", "enum": ["daily", "weekly"] },
+        "reminderTime": { "type": "string" },
+        "userId": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "details": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "frequency", "userId", "isActive", "createdAt"]
+    },
+    "HistoryRecord": {
+      "title": "Habit History",
+      "description": "Daily record of habit completion.",
+      "type": "object",
+      "properties": {
+        "habitId": { "type": "string" },
+        "userId": { "type": "string" },
+        "date": { "type": "string", "description": "Format: YYYY-MM-DD" },
+        "status": { "type": "string", "enum": ["done", "pending"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["habitId", "userId", "date", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles."
+    },
+    "/habits/{habitId}": {
+      "schema": "Habit",
+      "description": "Habit definitions."
+    },
+    "/history/{recordId}": {
+      "schema": "HistoryRecord",
+      "description": "Daily completion records indexed by date."
+    }
+  }
+}
